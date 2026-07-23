@@ -30,7 +30,7 @@
 - 仅全屏纯装饰纹理底图才用 background-image
 - 用户提供替换图时：拷贝到封面同目录，src 用相对路径
 
-## 3:4 画布骨架
+## 画布骨架（尺寸按 sizes.md 所选预设，下例为默认 1086×1448）
 
     <body style="margin:0">
       <div class="cover" style="width:1086px;height:1448px;overflow:hidden;position:relative">
