@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>晨间拉伸 · 小红书封面（可调版）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=ZCOOL+XiaoWei&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-color:#1b1a17;        /* 背景：深炭褐 */
+    --title-color:#f2ede3;     /* 主标题：暖白 */
+    --accent-color:#c9974e;    /* 强调色：暖金 */
+    --sub-color:#b6ab97;       /* 副文字：暖灰 */
+    --rule-color:#4a463d;      /* 分割线：暗橄榄 */
+    --title-size:158px;        /* 大字字号 */
+    --title-tracking:6px;      /* 大字字距 */
+    --sub-size:34px;           /* 副标题字号 */
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:#0e0e0d;font-family:sans-serif}
+  body{display:flex}
+
+  /* ---- 封面（导出对象） ---- */
+  .coverwrap{flex:0 0 auto}
+  .cover{
+    width:1086px;height:1448px;position:relative;overflow:hidden;
+    background:var(--bg-color);
+    font-family:'Inter',sans-serif;
+    color:var(--title-color);
+    transform-origin:top left;
+  }
+  .cover::after{
+    content:'';position:absolute;inset:0;pointer-events:none;opacity:.06;z-index:1;
+    background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .top{position:absolute;top:64px;left:64px;right:64px;display:flex;justify-content:space-between;align-items:baseline;z-index:2}
+  .kicker{font-size:20px;letter-spacing:6px;color:var(--accent-color);font-weight:600;text-transform:uppercase}
+  .tag{font-size:20px;letter-spacing:2px;color:var(--sub-color);font-weight:500}
+  .rule-top{position:absolute;top:104px;left:64px;right:64px;height:1px;background:var(--rule-color);z-index:2}
+
+  .photo{position:absolute;top:150px;left:64px;right:64px;height:560px;border:1px solid var(--rule-color);overflow:hidden;cursor:pointer;z-index:2}
+  .photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(.25) sepia(.15) brightness(.75)}
+  .corner-tl,.corner-br{position:absolute;width:22px;height:22px;z-index:3}
+  .corner-tl{top:-1px;left:-1px;border-top:3px solid var(--accent-color);border-left:3px solid var(--accent-color)}
+  .corner-br{bottom:-1px;right:-1px;border-bottom:3px solid var(--accent-color);border-right:3px solid var(--accent-color)}
+
+  .textzone{position:absolute;top:770px;left:64px;right:64px;z-index:2}
+  .title{
+    font-family:'Noto Serif SC',serif;font-weight:900;
+    font-size:var(--title-size);line-height:1.05;letter-spacing:var(--title-tracking);
+    color:var(--title-color);display:inline-block;
+  }
+  .subtitle{font-family:'ZCOOL XiaoWei',serif;font-weight:400;font-size:var(--sub-size);color:var(--sub-color);margin-top:28px;letter-spacing:2px;display:inline-block}
+  .divider{display:flex;align-items:center;gap:14px;margin:36px 0;z-index:2}
+  .divider .line{width:56px;height:1px;background:var(--accent-color)}
+  .divider .dot{width:6px;height:6px;background:var(--accent-color);transform:rotate(45deg)}
+  .tagline{font-family:'ZCOOL XiaoWei',serif;font-size:30px;color:var(--accent-color);letter-spacing:3px;display:inline-block}
+
+  .bottom{position:absolute;bottom:56px;left:64px;right:64px;display:flex;justify-content:space-between;align-items:flex-end;z-index:2}
+  .rule-bottom{position:absolute;bottom:100px;left:64px;right:64px;height:1px;background:var(--rule-color);z-index:2}
+  .meta{font-size:20px;letter-spacing:2px;color:var(--sub-color);display:inline-block}
+  .sign{font-size:22px;letter-spacing:1px;color:var(--title-color);font-weight:500;display:inline-block}
+
+  /* 拖拽 */
+  .drag{cursor:move}
+  .drag.dragging{outline:2px dashed rgba(232,115,74,.9);outline-offset:4px}
+  body.dragmode .drag:hover{outline:1px dashed rgba(232,115,74,.5);outline-offset:4px}
+
+  /* ---- 控制面板 ---- */
+  .panel{width:320px;flex:0 0 320px;background:#1e1e1e;color:#eee;padding:20px;overflow-y:auto;height:100vh;position:sticky;top:0;font-size:13px;box-sizing:border-box}
+  .panel h3{font-size:13px;margin:18px 0 8px;color:#e8734a;border-top:1px solid #333;padding-top:12px}
+  .panel h3:first-child{margin-top:0;border-top:none;padding-top:0}
+  .field{margin-bottom:10px}
+  .field label{display:block;margin-bottom:3px;color:#aaa}
+  .field input[type=text]{width:100%;background:#2a2a2a;border:1px solid #3a3a3a;color:#eee;padding:5px 7px;border-radius:4px}
+  .field input[type=color]{width:44px;height:26px;vertical-align:middle;border:none;background:none}
+  .field input[type=range]{width:100%}
+  .valtag{color:#8fbf8f;font-family:monospace;font-size:12px}
+  .row{display:flex;justify-content:space-between;align-items:center}
+  .btn{width:100%;padding:8px;margin-top:6px;background:#333;color:#eee;border:1px solid #444;border-radius:4px;cursor:pointer;font-size:13px}
+  .btn:hover{background:#3d3d3d}
+  .btn.primary{background:#e8734a;border-color:#e8734a;color:#fff}
+  .btn.primary:hover{background:#d4653e}
+  .hint{color:#777;font-size:11px;margin-top:2px}
+  #paramsOut{width:100%;height:160px;background:#111;color:#8fbf8f;font-family:monospace;font-size:11px;border:1px solid #333;margin-top:8px;padding:6px;box-sizing:border-box}
+  #fileNameShow{color:#8fbf8f;font-size:11px}
+</style>
+</head>
+<body>
+
+  <div class="coverwrap" id="coverwrap">
+    <div class="cover" id="cover">
+      <div class="top drag" id="elTop" data-name="顶部区">
+        <span class="kicker" id="elKicker">MORNING · STRETCH GUIDE</span>
+        <span class="tag" id="elTag">NO. 12</span>
+      </div>
+      <div class="rule-top"></div>
+
+      <div class="photo" id="photoArea">
+        <img id="photoImg" src="https://picsum.photos/seed/morningstretch/1000/600" alt="">
+        <div class="corner-tl"></div>
+        <div class="corner-br"></div>
+      </div>
+
+      <div class="textzone">
+        <div class="title drag" id="elTitle" data-name="大字">晨间拉伸</div>
+        <br>
+        <div class="subtitle drag" id="elSubtitle" data-name="副标题">五个动作唤醒沉睡的身体</div>
+        <div class="divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
+        <div class="tagline drag" id="elTagline" data-name="tagline">从早晨，认真对待自己</div>
+      </div>
+
+      <div class="rule-bottom"></div>
+      <div class="bottom">
+        <span class="meta" id="elMeta">2026 · 身体使用手册</span>
+        <span class="sign drag" id="elSign" data-name="署名">@封面临摹</span>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="fileInput" accept="image/*" style="display:none">
+
+  <div class="panel">
+    <h3>文字</h3>
+    <div class="field"><label>kicker（英文栏目）</label><input type="text" id="cKicker" value="MORNING · STRETCH GUIDE"></div>
+    <div class="field"><label>编号</label><input type="text" id="cTag" value="NO. 12"></div>
+    <div class="field"><label>大字</label><input type="text" id="cTitle" value="晨间拉伸"></div>
+    <div class="field"><label>副标题</label><input type="text" id="cSubtitle" value="五个动作唤醒沉睡的身体"></div>
+    <div class="field"><label>tagline</label><input type="text" id="cTagline" value="从早晨，认真对待自己"></div>
+    <div class="field"><label>日期/来源</label><input type="text" id="cMeta" value="2026 · 身体使用手册"></div>
+    <div class="field"><label>我的署名</label><input type="text" id="cSign" value="@封面临摹"></div>
+
+    <h3>图片</h3>
+    <div class="field"><label>点击封面图区换本地图（主推）</label>
+      <div class="hint">直接点击左侧封面里的图片区域即可弹出文件选择</div>
+      <span id="fileNameShow"></span>
+    </div>
+    <div class="field"><label>或填图片链接（备选）</label><input type="text" id="cImgUrl" placeholder="https://..."></div>
+
+    <h3>颜色</h3>
+    <div class="field row"><label style="flex:1">背景色</label><input type="color" id="cBg" value="#1b1a17"><span class="valtag" id="vBg">#1b1a17</span></div>
+    <div class="field row"><label style="flex:1">主文字色</label><input type="color" id="cTitleColor" value="#f2ede3"><span class="valtag" id="vTitleColor">#f2ede3</span></div>
+    <div class="field row"><label style="flex:1">强调色</label><input type="color" id="cAccent" value="#c9974e"><span class="valtag" id="vAccent">#c9974e</span></div>
+    <div class="field row"><label style="flex:1">副文字色</label><input type="color" id="cSub" value="#b6ab97"><span class="valtag" id="vSub">#b6ab97</span></div>
+    <div class="field row"><label style="flex:1">分割线色</label><input type="color" id="cRule" value="#4a463d"><span class="valtag" id="vRule">#4a463d</span></div>
+
+    <h3>数值</h3>
+    <div class="field"><label>大字字号 <span class="valtag" id="vTitleSize">158px</span></label><input type="range" id="cTitleSize" min="120" max="220" value="158"></div>
+    <div class="field"><label>大字字距 <span class="valtag" id="vTitleTracking">6px</span></label><input type="range" id="cTitleTracking" min="-4" max="20" value="6"></div>
+    <div class="field"><label>副标题字号 <span class="valtag" id="vSubSize">34px</span></label><input type="range" id="cSubSize" min="24" max="48" value="34"></div>
+
+    <h3>拖拽</h3>
+    <button class="btn" id="btnDragToggle">开启拖拽</button>
+    <button class="btn" id="btnResetPos">重置所有位置</button>
+
+    <h3>导出</h3>
+    <button class="btn" id="btnDownload">下载 PNG（快速导出）</button>
+    <div class="hint">快速导出，精细效果以正式导出为准</div>
+    <button class="btn primary" id="btnCopy">复制参数</button>
+    <textarea id="paramsOut" readonly></textarea>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.13/dist/html-to-image.min.js"></script>
+  <script>
+    var root=document.documentElement;
+
+    // ---- 预览缩放（不影响导出）----
+    function fit(){
+      var availW=window.innerWidth-320-72, availH=window.innerHeight-48;
+      var s=Math.min(availW/1086, availH/1448, 1); s=Math.max(s,0.2);
+      var cover=document.getElementById('cover'), wrap=document.getElementById('coverwrap');
+      cover.style.transform='scale('+s+')'; wrap.style.width=(1086*s)+'px'; wrap.style.height=(1448*s)+'px';
+    }
+    window.addEventListener('resize',fit); fit();
+
+    // ---- helper：文本/颜色/数值绑定 ----
+    function bindText(inputId,elId){var i=document.getElementById(inputId),e=document.getElementById(elId);
+      i.addEventListener('input',function(){e.textContent=i.value});}
+    function bindColor(inputId,varName,valId){var i=document.getElementById(inputId),v=document.getElementById(valId);
+      i.addEventListener('input',function(){root.style.setProperty(varName,i.value);v.textContent=i.value;});}
+    function bindRange(inputId,varName,valId,unit){var i=document.getElementById(inputId),v=document.getElementById(valId);
+      i.addEventListener('input',function(){root.style.setProperty(varName,i.value+unit);v.textContent=i.value+unit;});}
+
+    bindText('cKicker','elKicker');
+    bindText('cTag','elTag');
+    bindText('cTitle','elTitle');
+    bindText('cSubtitle','elSubtitle');
+    bindText('cTagline','elTagline');
+    bindText('cMeta','elMeta');
+
+    // 署名：清空则隐藏
+    (function(){
+      var i=document.getElementById('cSign'), e=document.getElementById('elSign');
+      i.addEventListener('input',function(){e.textContent=i.value; e.style.display=i.value?'':'none';});
+    })();
+
+    bindColor('cBg','--bg-color','vBg');
+    bindColor('cTitleColor','--title-color','vTitleColor');
+    bindColor('cAccent','--accent-color','vAccent');
+    bindColor('cSub','--sub-color','vSub');
+    bindColor('cRule','--rule-color','vRule');
+
+    bindRange('cTitleSize','--title-size','vTitleSize','px');
+    bindRange('cTitleTracking','--title-tracking','vTitleTracking','px');
+    bindRange('cSubSize','--sub-size','vSubSize','px');
+
+    // ---- 图片：URL 输入 ----
+    var cImgUrl=document.getElementById('cImgUrl');
+    cImgUrl.addEventListener('input',function(){
+      document.getElementById('photoImg').src=cImgUrl.value;
+      window.__localImg='';
+    });
+
+    // ---- 图片：点击换本地图 ----
+    var fileInput=document.getElementById('fileInput');
+    document.getElementById('photoArea').addEventListener('click',function(){
+      if(document.body.classList.contains('dragmode'))return; // 拖拽模式下不误触发换图
+      fileInput.click();
+    });
+    fileInput.addEventListener('change',function(){
+      var f=this.files&&this.files[0];if(!f)return;
+      var rd=new FileReader();
+      rd.onload=function(){
+        document.getElementById('photoImg').src=rd.result;
+        window.__localImg=f.name;
+        document.getElementById('fileNameShow').textContent='已选本地图：'+f.name;
+        cImgUrl.value='';
+      };
+      rd.readAsDataURL(f);
+    });
+
+    // ---- 拖拽定位 ----
+    var scaleOf=function(){var c=document.getElementById('cover');return c.getBoundingClientRect().width/c.offsetWidth||1;};
+    document.querySelectorAll('.cover .drag').forEach(function(el){
+      el.dataset.dx=0;el.dataset.dy=0;
+      el.addEventListener('pointerdown',function(e){
+        if(!document.body.classList.contains('dragmode'))return;
+        e.preventDefault();var s=scaleOf();
+        var sx=e.clientX,sy=e.clientY,bx=parseFloat(el.dataset.dx),by=parseFloat(el.dataset.dy);
+        el.classList.add('dragging');el.setPointerCapture(e.pointerId);
+        function mv(ev){var nx=bx+(ev.clientX-sx)/s,ny=by+(ev.clientY-sy)/s;
+          el.dataset.dx=nx;el.dataset.dy=ny;el.style.transform='translate('+nx+'px,'+ny+'px)';}
+        function up(){el.classList.remove('dragging');
+          el.removeEventListener('pointermove',mv);el.removeEventListener('pointerup',up);}
+        el.addEventListener('pointermove',mv);el.addEventListener('pointerup',up);
+      });
+    });
+
+    document.getElementById('btnDragToggle').addEventListener('click',function(){
+      document.body.classList.toggle('dragmode');
+      this.textContent=document.body.classList.contains('dragmode')?'暂停拖拽':'开启拖拽';
+    });
+    document.getElementById('btnResetPos').addEventListener('click',function(){
+      document.querySelectorAll('.cover .drag').forEach(function(el){
+        el.dataset.dx=0;el.dataset.dy=0;el.style.transform='';
+      });
+    });
+
+    // ---- 下载 PNG（浏览器内快速导出）----
+    document.getElementById('btnDownload').addEventListener('click', function(){
+      var cover=document.getElementById('cover'), old=cover.style.transform;
+      cover.style.transform='none';
+      htmlToImage.toPng(cover,{width:1086,height:1448,pixelRatio:1})
+        .then(function(url){ cover.style.transform=old;
+          var a=document.createElement('a'); a.download='封面_快速导出.png'; a.href=url; a.click(); })
+        .catch(function(e){ cover.style.transform=old; alert('导出失败：'+e+'（可改用复制参数流程出正式图）'); });
+    });
+
+    // ---- 复制参数 ----
+    document.getElementById('btnCopy').addEventListener('click', function(){
+      function pos(id){var e=document.getElementById(id);return 'x='+Math.round(e.dataset.dx)+'px y='+Math.round(e.dataset.dy)+'px';}
+      var imgLine = window.__localImg ? ('本地图「'+window.__localImg+'」——请把这张图一起发我') : (cImgUrl.value || document.getElementById('photoImg').src);
+      var text = [
+        '【封面参数 · 晨间拉伸】',
+        'kicker: '+document.getElementById('cKicker').value,
+        '编号: '+document.getElementById('cTag').value,
+        '大字: '+document.getElementById('cTitle').value,
+        '副标题: '+document.getElementById('cSubtitle').value,
+        'tagline: '+document.getElementById('cTagline').value,
+        '日期: '+document.getElementById('cMeta').value,
+        '署名: '+document.getElementById('cSign').value,
+        '图片: '+imgLine,
+        '背景色: '+document.getElementById('cBg').value,
+        '主文字色: '+document.getElementById('cTitleColor').value,
+        '强调色: '+document.getElementById('cAccent').value,
+        '副文字色: '+document.getElementById('cSub').value,
+        '分割线色: '+document.getElementById('cRule').value,
+        '大字字号: '+document.getElementById('cTitleSize').value+'px',
+        '大字字距: '+document.getElementById('cTitleTracking').value+'px',
+        '副标题字号: '+document.getElementById('cSubSize').value+'px',
+        '—— 位置偏移（0,0=原位）——',
+        '顶部区位置: '+pos('elTop'),
+        '大字位置: '+pos('elTitle'),
+        '副标题位置: '+pos('elSubtitle'),
+        'tagline位置: '+pos('elTagline'),
+        '署名位置: '+pos('elSign')
+      ].join('\n');
+      document.getElementById('paramsOut').value = text;
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).catch(function(){});
+      }
+    });
+  </script>
+</body>
+</html>

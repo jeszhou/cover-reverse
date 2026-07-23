@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>晨间拉伸 · 小红书封面 v1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=ZCOOL+XiaoWei&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-color:#1b1a17;        /* 背景：深炭褐 */
+    --title-color:#f2ede3;     /* 主标题：暖白 */
+    --accent-color:#4a8fc9;    /* 强调色：改为冷蓝（用户参数回填） */
+    --sub-color:#b6ab97;       /* 副文字：暖灰 */
+    --rule-color:#4a463d;      /* 分割线：暗橄榄 */
+    --title-size:180px;        /* 大字字号（用户参数回填，原 158px） */
+    --title-tracking:6px;      /* 大字字距 */
+    --sub-size:34px;           /* 副标题字号 */
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{margin:0}
+  .cover{
+    width:1086px;height:1448px;position:relative;overflow:hidden;
+    background:var(--bg-color);
+    font-family:'Inter',sans-serif;
+    color:var(--title-color);
+  }
+  .cover::after{
+    content:'';position:absolute;inset:0;pointer-events:none;opacity:.06;z-index:1;
+    background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .top{position:absolute;top:64px;left:64px;right:64px;display:flex;justify-content:space-between;align-items:baseline;z-index:2}
+  .kicker{font-size:20px;letter-spacing:6px;color:var(--accent-color);font-weight:600;text-transform:uppercase}
+  .tag{font-size:20px;letter-spacing:2px;color:var(--sub-color);font-weight:500}
+  .rule-top{position:absolute;top:104px;left:64px;right:64px;height:1px;background:var(--rule-color);z-index:2}
+
+  .photo{position:absolute;top:150px;left:64px;right:64px;height:560px;border:1px solid var(--rule-color);overflow:hidden;z-index:2}
+  .photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(.25) sepia(.15) brightness(.75)}
+  .corner-tl,.corner-br{position:absolute;width:22px;height:22px;z-index:3}
+  .corner-tl{top:-1px;left:-1px;border-top:3px solid var(--accent-color);border-left:3px solid var(--accent-color)}
+  .corner-br{bottom:-1px;right:-1px;border-bottom:3px solid var(--accent-color);border-right:3px solid var(--accent-color)}
+
+  .textzone{position:absolute;top:770px;left:64px;right:64px;z-index:2}
+  .title{
+    font-family:'Noto Serif SC',serif;font-weight:900;
+    font-size:var(--title-size);line-height:1.05;letter-spacing:var(--title-tracking);
+    color:var(--title-color);
+  }
+  .subtitle{font-family:'ZCOOL XiaoWei',serif;font-weight:400;font-size:var(--sub-size);color:var(--sub-color);margin-top:28px;letter-spacing:2px}
+  .divider{display:flex;align-items:center;gap:14px;margin:36px 0}
+  .divider .line{width:56px;height:1px;background:var(--accent-color)}
+  .divider .dot{width:6px;height:6px;background:var(--accent-color);transform:rotate(45deg)}
+  .tagline{font-family:'ZCOOL XiaoWei',serif;font-size:30px;color:var(--accent-color);letter-spacing:3px}
+
+  .bottom{position:absolute;bottom:56px;left:64px;right:64px;display:flex;justify-content:space-between;align-items:flex-end;z-index:2}
+  .rule-bottom{position:absolute;bottom:100px;left:64px;right:64px;height:1px;background:var(--rule-color);z-index:2}
+  .meta{font-size:20px;letter-spacing:2px;color:var(--sub-color)}
+  .sign{font-size:22px;letter-spacing:1px;color:var(--title-color);font-weight:500}
+</style>
+</head>
+<body>
+  <div class="cover" id="cover">
+    <div class="top">
+      <div class="kicker">MORNING · STRETCH GUIDE</div>
+      <div class="tag">NO. 12</div>
+    </div>
+    <div class="rule-top"></div>
+
+    <div class="photo">
+      <img src="https://picsum.photos/seed/morningstretch2026/1000/600" alt="">
+      <div class="corner-tl"></div>
+      <div class="corner-br"></div>
+    </div>
+
+    <div class="textzone">
+      <div class="title">晨间拉伸</div>
+      <div class="subtitle">五个动作唤醒沉睡的身体</div>
+      <div class="divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
+      <div class="tagline">从早晨，认真对待自己</div>
+    </div>
+
+    <div class="rule-bottom"></div>
+    <div class="bottom">
+      <div class="meta">2026 · 身体使用手册</div>
+      <!-- 署名位置回填参数 x=-40px y=-10px -->
+      <div class="sign" style="transform:translate(-40px,-10px)">@封面临摹</div>
+    </div>
+  </div>
+</body>
+</html>
