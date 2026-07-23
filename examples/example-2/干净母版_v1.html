@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>慢半拍 · 公众号头图 v1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-color:#f6f1e6;        /* 背景：暖米白 */
+    --title-color:#211d16;     /* 大字/署名：近黑 */
+    --sub-color:#786f60;       /* 副标题/kicker/日期：暖灰 */
+    --accent-color:#b2472c;    /* 强调色：深赤陶（用户参数回填，原 #c65d3b） */
+    --accent2-color:#8ea888;   /* 色块二：鼠尾草绿（大圆） */
+    --accent3-color:#e3b23c;   /* 色块三：芥末黄（小圆） */
+    --rule-color:#d8cfbd;      /* 分割线/描边：浅褐 */
+    --title-size:96px;         /* 大字字号（用户参数回填，原 88px） */
+    --title-tracking:-2px;     /* 大字字距（用户参数回填，原 -1px） */
+    --sub-size:24px;           /* 副标题字号 */
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{margin:0}
+  .cover{
+    width:900px;height:383px;position:relative;overflow:hidden;
+    background:var(--bg-color);
+    font-family:'Inter',sans-serif;
+    color:var(--title-color);
+  }
+  .frame{position:absolute;inset:14px;border:1px solid var(--rule-color);z-index:2;pointer-events:none}
+
+  .deco-circle1{position:absolute;top:-80px;right:-60px;width:260px;height:260px;border-radius:50%;background:var(--accent2-color);z-index:1}
+  .deco-circle2{position:absolute;bottom:-50px;right:-30px;width:150px;height:150px;border-radius:50%;background:var(--accent3-color);z-index:1}
+  .deco-ring{position:absolute;top:60px;right:-140px;width:340px;height:340px;border-radius:50%;border:1px solid var(--rule-color);z-index:1}
+  .deco-diamond{position:absolute;top:150px;left:560px;width:90px;height:90px;border:3px solid var(--accent-color);transform:rotate(45deg);z-index:2}
+  .photo-badge{position:absolute;top:190px;left:618px;width:104px;height:104px;border-radius:50%;border:5px solid #fbf8f1;box-shadow:0 4px 14px rgba(0,0,0,.18);overflow:hidden;z-index:3}
+  .photo-badge img{width:100%;height:100%;object-fit:cover}
+
+  .top{position:absolute;top:36px;left:48px;right:0;z-index:2}
+  .kicker{font-size:15px;letter-spacing:4px;color:var(--sub-color);font-weight:600;text-transform:uppercase}
+  .badge{position:absolute;top:28px;right:32px;background:var(--accent-color);color:#fff;font-size:14px;letter-spacing:2px;font-weight:600;padding:6px 14px;border-radius:999px;z-index:4}
+  .rule-top{position:absolute;top:76px;left:48px;width:452px;height:1px;background:var(--rule-color);z-index:2}
+
+  .textzone{position:absolute;top:104px;left:48px;width:440px;z-index:2}
+  .title{font-family:'Noto Sans SC',sans-serif;font-weight:900;font-size:var(--title-size);line-height:1;letter-spacing:var(--title-tracking);color:var(--title-color)}
+  .subtitle{font-family:'Noto Sans SC',sans-serif;font-weight:500;font-size:var(--sub-size);color:var(--sub-color);margin-top:14px;letter-spacing:.5px}
+  .divider{display:flex;align-items:center;gap:10px;margin:16px 0;z-index:2}
+  .divider .line{width:36px;height:2px;background:var(--accent-color)}
+  .divider .dot{width:6px;height:6px;background:var(--accent-color);border-radius:50%}
+  .tagline{font-family:'Noto Sans SC',sans-serif;font-weight:400;font-size:20px;color:var(--accent-color);letter-spacing:.5px}
+
+  .rule-bottom{position:absolute;bottom:36px;left:48px;right:32px;height:1px;background:var(--rule-color);z-index:2}
+  .bottom{position:absolute;bottom:14px;left:48px;right:32px;display:flex;justify-content:space-between;align-items:flex-end;z-index:2}
+  .meta{font-size:14px;letter-spacing:1px;color:var(--sub-color)}
+  .sign{font-size:15px;letter-spacing:.5px;color:var(--title-color);font-weight:600}
+</style>
+</head>
+<body>
+  <div class="cover" id="cover">
+    <div class="deco-ring"></div>
+    <div class="deco-circle1"></div>
+    <div class="deco-circle2"></div>
+    <div class="deco-diamond"></div>
+    <div class="photo-badge"><img src="https://picsum.photos/seed/plannerlab09/300/300" alt=""></div>
+    <div class="frame"></div>
+
+    <div class="top">
+      <span class="kicker">STATIONERY LAB · VOL.09</span>
+    </div>
+    <span class="badge">NO. 09</span>
+    <div class="rule-top"></div>
+
+    <div class="textzone">
+      <div class="title">慢半拍</div>
+      <div class="subtitle">一页手账，慢下来生活的练习</div>
+      <div class="divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
+      <div class="tagline">字迹，是时间的证据</div>
+    </div>
+
+    <div class="rule-bottom"></div>
+    <div class="bottom">
+      <span class="meta">2026 · 纸上生活研究所</span>
+      <!-- 署名位置回填参数 x=-30px y=0px -->
+      <span class="sign" style="transform:translate(-30px,0px)">@封面临摹</span>
+    </div>
+  </div>
+</body>
+</html>

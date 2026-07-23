@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>慢半拍 · 公众号头图（可调版）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-color:#f6f1e6;        /* 背景：暖米白 */
+    --title-color:#211d16;     /* 大字/署名：近黑 */
+    --sub-color:#786f60;       /* 副标题/kicker/日期：暖灰 */
+    --accent-color:#c65d3b;    /* 强调色：赤陶红（徽标/分割线/tagline/菱形描边） */
+    --accent2-color:#8ea888;   /* 色块二：鼠尾草绿（大圆） */
+    --accent3-color:#e3b23c;   /* 色块三：芥末黄（小圆） */
+    --rule-color:#d8cfbd;      /* 分割线/描边：浅褐 */
+    --title-size:88px;         /* 大字字号 */
+    --title-tracking:-1px;     /* 大字字距 */
+    --sub-size:24px;           /* 副标题字号 */
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:#0e0e0d;font-family:sans-serif}
+  body{display:flex}
+
+  /* ---- 封面（导出对象，900×383） ---- */
+  .coverwrap{flex:0 0 auto}
+  .cover{
+    width:900px;height:383px;position:relative;overflow:hidden;
+    background:var(--bg-color);
+    font-family:'Inter',sans-serif;
+    color:var(--title-color);
+    transform-origin:top left;
+  }
+  .frame{position:absolute;inset:14px;border:1px solid var(--rule-color);z-index:2;pointer-events:none}
+
+  .deco-circle1{position:absolute;top:-80px;right:-60px;width:260px;height:260px;border-radius:50%;background:var(--accent2-color);z-index:1}
+  .deco-circle2{position:absolute;bottom:-50px;right:-30px;width:150px;height:150px;border-radius:50%;background:var(--accent3-color);z-index:1}
+  .deco-ring{position:absolute;top:60px;right:-140px;width:340px;height:340px;border-radius:50%;border:1px solid var(--rule-color);z-index:1}
+  .deco-diamond{position:absolute;top:150px;left:560px;width:90px;height:90px;border:3px solid var(--accent-color);transform:rotate(45deg);z-index:2}
+  .photo-badge{position:absolute;top:190px;left:618px;width:104px;height:104px;border-radius:50%;border:5px solid #fbf8f1;box-shadow:0 4px 14px rgba(0,0,0,.18);overflow:hidden;z-index:3;cursor:pointer}
+  .photo-badge img{width:100%;height:100%;object-fit:cover}
+
+  .top{position:absolute;top:36px;left:48px;right:0;z-index:2}
+  .kicker{font-size:15px;letter-spacing:4px;color:var(--sub-color);font-weight:600;text-transform:uppercase;display:inline-block}
+  .badge{position:absolute;top:28px;right:32px;background:var(--accent-color);color:#fff;font-size:14px;letter-spacing:2px;font-weight:600;padding:6px 14px;border-radius:999px;z-index:4;display:inline-block}
+  .rule-top{position:absolute;top:76px;left:48px;width:452px;height:1px;background:var(--rule-color);z-index:2}
+
+  .textzone{position:absolute;top:108px;left:48px;width:440px;z-index:2}
+  .title{font-family:'Noto Sans SC',sans-serif;font-weight:900;font-size:var(--title-size);line-height:1;letter-spacing:var(--title-tracking);color:var(--title-color);display:inline-block}
+  .subtitle{font-family:'Noto Sans SC',sans-serif;font-weight:500;font-size:var(--sub-size);color:var(--sub-color);margin-top:16px;letter-spacing:.5px;display:inline-block}
+  .divider{display:flex;align-items:center;gap:10px;margin:18px 0;z-index:2}
+  .divider .line{width:36px;height:2px;background:var(--accent-color)}
+  .divider .dot{width:6px;height:6px;background:var(--accent-color);border-radius:50%}
+  .tagline{font-family:'Noto Sans SC',sans-serif;font-weight:400;font-size:20px;color:var(--accent-color);letter-spacing:.5px;display:inline-block}
+
+  .rule-bottom{position:absolute;bottom:36px;left:48px;right:32px;height:1px;background:var(--rule-color);z-index:2}
+  .bottom{position:absolute;bottom:14px;left:48px;right:32px;display:flex;justify-content:space-between;align-items:flex-end;z-index:2}
+  .meta{font-size:14px;letter-spacing:1px;color:var(--sub-color);display:inline-block}
+  .sign{font-size:15px;letter-spacing:.5px;color:var(--title-color);font-weight:600;display:inline-block}
+
+  /* 拖拽 */
+  .drag{cursor:move}
+  .drag.dragging{outline:2px dashed rgba(198,93,59,.9);outline-offset:4px}
+  body.dragmode .drag:hover{outline:1px dashed rgba(198,93,59,.5);outline-offset:4px}
+
+  /* ---- 控制面板 ---- */
+  .panel{width:320px;flex:0 0 320px;background:#1e1e1e;color:#eee;padding:20px;overflow-y:auto;height:100vh;position:sticky;top:0;font-size:13px;box-sizing:border-box}
+  .panel h3{font-size:13px;margin:18px 0 8px;color:#c65d3b;border-top:1px solid #333;padding-top:12px}
+  .panel h3:first-child{margin-top:0;border-top:none;padding-top:0}
+  .field{margin-bottom:10px}
+  .field label{display:block;margin-bottom:3px;color:#aaa}
+  .field input[type=text]{width:100%;background:#2a2a2a;border:1px solid #3a3a3a;color:#eee;padding:5px 7px;border-radius:4px}
+  .field input[type=color]{width:44px;height:26px;vertical-align:middle;border:none;background:none}
+  .field input[type=range]{width:100%}
+  .valtag{color:#8fbf8f;font-family:monospace;font-size:12px}
+  .row{display:flex;justify-content:space-between;align-items:center}
+  .btn{width:100%;padding:8px;margin-top:6px;background:#333;color:#eee;border:1px solid #444;border-radius:4px;cursor:pointer;font-size:13px}
+  .btn:hover{background:#3d3d3d}
+  .btn.primary{background:#c65d3b;border-color:#c65d3b;color:#fff}
+  .btn.primary:hover{background:#b5502f}
+  .hint{color:#777;font-size:11px;margin-top:2px}
+  #paramsOut{width:100%;height:170px;background:#111;color:#8fbf8f;font-family:monospace;font-size:11px;border:1px solid #333;margin-top:8px;padding:6px;box-sizing:border-box}
+  #fileNameShow{color:#8fbf8f;font-size:11px}
+</style>
+</head>
+<body>
+
+  <div class="coverwrap" id="coverwrap">
+    <div class="cover" id="cover">
+      <div class="deco-ring"></div>
+      <div class="deco-circle1"></div>
+      <div class="deco-circle2"></div>
+      <div class="deco-diamond"></div>
+      <div class="photo-badge" id="photoArea"><img id="photoImg" src="https://picsum.photos/seed/plannerlab09/300/300" alt=""></div>
+      <div class="frame"></div>
+
+      <div class="top drag" id="elTop" data-name="顶部区">
+        <span class="kicker" id="elKicker">STATIONERY LAB · VOL.09</span>
+      </div>
+      <span class="badge drag" id="elBadge" data-name="编号徽标">NO. 09</span>
+      <div class="rule-top"></div>
+
+      <div class="textzone">
+        <div class="title drag" id="elTitle" data-name="大字">慢半拍</div>
+        <br>
+        <div class="subtitle drag" id="elSubtitle" data-name="副标题">一页手账，慢下来生活的练习</div>
+        <div class="divider"><div class="line"></div><div class="dot"></div><div class="line"></div></div>
+        <div class="tagline drag" id="elTagline" data-name="tagline">字迹，是时间的证据</div>
+      </div>
+
+      <div class="rule-bottom"></div>
+      <div class="bottom">
+        <span class="meta" id="elMeta">2026 · 纸上生活研究所</span>
+        <span class="sign drag" id="elSign" data-name="署名">@封面临摹</span>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="fileInput" accept="image/*" style="display:none">
+
+  <div class="panel">
+    <h3>文字</h3>
+    <div class="field"><label>kicker（英文栏目）</label><input type="text" id="cKicker" value="STATIONERY LAB · VOL.09"></div>
+    <div class="field"><label>编号徽标</label><input type="text" id="cBadge" value="NO. 09"></div>
+    <div class="field"><label>大字</label><input type="text" id="cTitle" value="慢半拍"></div>
+    <div class="field"><label>副标题</label><input type="text" id="cSubtitle" value="一页手账，慢下来生活的练习"></div>
+    <div class="field"><label>tagline</label><input type="text" id="cTagline" value="字迹，是时间的证据"></div>
+    <div class="field"><label>日期/来源</label><input type="text" id="cMeta" value="2026 · 纸上生活研究所"></div>
+    <div class="field"><label>我的署名</label><input type="text" id="cSign" value="@封面临摹"></div>
+
+    <h3>图片</h3>
+    <div class="field"><label>点击封面圆形图区换本地图（主推）</label>
+      <div class="hint">直接点击左侧封面里的圆形图片区域即可弹出文件选择</div>
+      <span id="fileNameShow"></span>
+    </div>
+    <div class="field"><label>或填图片链接（备选）</label><input type="text" id="cImgUrl" placeholder="https://..."></div>
+
+    <h3>颜色</h3>
+    <div class="field row"><label style="flex:1">背景色</label><input type="color" id="cBg" value="#f6f1e6"><span class="valtag" id="vBg">#f6f1e6</span></div>
+    <div class="field row"><label style="flex:1">主文字色</label><input type="color" id="cTitleColor" value="#211d16"><span class="valtag" id="vTitleColor">#211d16</span></div>
+    <div class="field row"><label style="flex:1">强调色（徽标/分割线/菱形）</label><input type="color" id="cAccent" value="#c65d3b"><span class="valtag" id="vAccent">#c65d3b</span></div>
+    <div class="field row"><label style="flex:1">色块二（大圆）</label><input type="color" id="cAccent2" value="#8ea888"><span class="valtag" id="vAccent2">#8ea888</span></div>
+    <div class="field row"><label style="flex:1">色块三（小圆）</label><input type="color" id="cAccent3" value="#e3b23c"><span class="valtag" id="vAccent3">#e3b23c</span></div>
+    <div class="field row"><label style="flex:1">副文字色</label><input type="color" id="cSub" value="#786f60"><span class="valtag" id="vSub">#786f60</span></div>
+    <div class="field row"><label style="flex:1">分割线/描边色</label><input type="color" id="cRule" value="#d8cfbd"><span class="valtag" id="vRule">#d8cfbd</span></div>
+
+    <h3>数值</h3>
+    <div class="field"><label>大字字号 <span class="valtag" id="vTitleSize">88px</span></label><input type="range" id="cTitleSize" min="56" max="120" value="88"></div>
+    <div class="field"><label>大字字距 <span class="valtag" id="vTitleTracking">-1px</span></label><input type="range" id="cTitleTracking" min="-6" max="10" value="-1"></div>
+    <div class="field"><label>副标题字号 <span class="valtag" id="vSubSize">24px</span></label><input type="range" id="cSubSize" min="16" max="34" value="24"></div>
+
+    <h3>拖拽</h3>
+    <button class="btn" id="btnDragToggle">开启拖拽</button>
+    <button class="btn" id="btnResetPos">重置所有位置</button>
+
+    <h3>导出</h3>
+    <button class="btn" id="btnDownload">下载 PNG（快速导出）</button>
+    <div class="hint">快速导出，精细效果以正式导出为准</div>
+    <button class="btn primary" id="btnCopy">复制参数</button>
+    <textarea id="paramsOut" readonly></textarea>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.13/dist/html-to-image.min.js"></script>
+  <script>
+    var root=document.documentElement;
+
+    // ---- 预览缩放（不影响导出）----
+    function fit(){
+      var availW=window.innerWidth-320-72, availH=window.innerHeight-48;
+      var s=Math.min(availW/900, availH/383, 1); s=Math.max(s,0.2);
+      var cover=document.getElementById('cover'), wrap=document.getElementById('coverwrap');
+      cover.style.transform='scale('+s+')'; wrap.style.width=(900*s)+'px'; wrap.style.height=(383*s)+'px';
+    }
+    window.addEventListener('resize',fit); fit();
+
+    // ---- helper：文本/颜色/数值绑定 ----
+    function bindText(inputId,elId){var i=document.getElementById(inputId),e=document.getElementById(elId);
+      i.addEventListener('input',function(){e.textContent=i.value});}
+    function bindColor(inputId,varName,valId){var i=document.getElementById(inputId),v=document.getElementById(valId);
+      i.addEventListener('input',function(){root.style.setProperty(varName,i.value);v.textContent=i.value;});}
+    function bindRange(inputId,varName,valId,unit){var i=document.getElementById(inputId),v=document.getElementById(valId);
+      i.addEventListener('input',function(){root.style.setProperty(varName,i.value+unit);v.textContent=i.value+unit;});}
+
+    bindText('cKicker','elKicker');
+    bindText('cBadge','elBadge');
+    bindText('cTitle','elTitle');
+    bindText('cSubtitle','elSubtitle');
+    bindText('cTagline','elTagline');
+    bindText('cMeta','elMeta');
+
+    // 署名：清空则隐藏
+    (function(){
+      var i=document.getElementById('cSign'), e=document.getElementById('elSign');
+      i.addEventListener('input',function(){e.textContent=i.value; e.style.display=i.value?'':'none';});
+    })();
+
+    bindColor('cBg','--bg-color','vBg');
+    bindColor('cTitleColor','--title-color','vTitleColor');
+    bindColor('cAccent','--accent-color','vAccent');
+    bindColor('cAccent2','--accent2-color','vAccent2');
+    bindColor('cAccent3','--accent3-color','vAccent3');
+    bindColor('cSub','--sub-color','vSub');
+    bindColor('cRule','--rule-color','vRule');
+
+    bindRange('cTitleSize','--title-size','vTitleSize','px');
+    bindRange('cTitleTracking','--title-tracking','vTitleTracking','px');
+    bindRange('cSubSize','--sub-size','vSubSize','px');
+
+    // ---- 图片：URL 输入 ----
+    var cImgUrl=document.getElementById('cImgUrl');
+    cImgUrl.addEventListener('input',function(){
+      document.getElementById('photoImg').src=cImgUrl.value;
+      window.__localImg='';
+    });
+
+    // ---- 图片：点击换本地图 ----
+    var fileInput=document.getElementById('fileInput');
+    document.getElementById('photoArea').addEventListener('click',function(){
+      if(document.body.classList.contains('dragmode'))return; // 拖拽模式下不误触发换图
+      fileInput.click();
+    });
+    fileInput.addEventListener('change',function(){
+      var f=this.files&&this.files[0];if(!f)return;
+      var rd=new FileReader();
+      rd.onload=function(){
+        document.getElementById('photoImg').src=rd.result;
+        window.__localImg=f.name;
+        document.getElementById('fileNameShow').textContent='已选本地图：'+f.name;
+        cImgUrl.value='';
+      };
+      rd.readAsDataURL(f);
+    });
+
+    // ---- 拖拽定位 ----
+    var scaleOf=function(){var c=document.getElementById('cover');return c.getBoundingClientRect().width/c.offsetWidth||1;};
+    document.querySelectorAll('.cover .drag').forEach(function(el){
+      el.dataset.dx=0;el.dataset.dy=0;
+      el.addEventListener('pointerdown',function(e){
+        if(!document.body.classList.contains('dragmode'))return;
+        e.preventDefault();var s=scaleOf();
+        var sx=e.clientX,sy=e.clientY,bx=parseFloat(el.dataset.dx),by=parseFloat(el.dataset.dy);
+        el.classList.add('dragging');el.setPointerCapture(e.pointerId);
+        function mv(ev){var nx=bx+(ev.clientX-sx)/s,ny=by+(ev.clientY-sy)/s;
+          el.dataset.dx=nx;el.dataset.dy=ny;el.style.transform='translate('+nx+'px,'+ny+'px)';}
+        function up(){el.classList.remove('dragging');
+          el.removeEventListener('pointermove',mv);el.removeEventListener('pointerup',up);}
+        el.addEventListener('pointermove',mv);el.addEventListener('pointerup',up);
+      });
+    });
+
+    document.getElementById('btnDragToggle').addEventListener('click',function(){
+      document.body.classList.toggle('dragmode');
+      this.textContent=document.body.classList.contains('dragmode')?'暂停拖拽':'开启拖拽';
+    });
+    document.getElementById('btnResetPos').addEventListener('click',function(){
+      document.querySelectorAll('.cover .drag').forEach(function(el){
+        el.dataset.dx=0;el.dataset.dy=0;el.style.transform='';
+      });
+    });
+
+    // ---- 下载 PNG（浏览器内快速导出）----
+    document.getElementById('btnDownload').addEventListener('click', function(){
+      var cover=document.getElementById('cover'), old=cover.style.transform;
+      cover.style.transform='none';
+      htmlToImage.toPng(cover,{width:900,height:383,pixelRatio:1})
+        .then(function(url){ cover.style.transform=old;
+          var a=document.createElement('a'); a.download='头图_快速导出.png'; a.href=url; a.click(); })
+        .catch(function(e){ cover.style.transform=old; alert('导出失败：'+e+'（可改用复制参数流程出正式图）'); });
+    });
+
+    // ---- 复制参数 ----
+    document.getElementById('btnCopy').addEventListener('click', function(){
+      function pos(id){var e=document.getElementById(id);return 'x='+Math.round(e.dataset.dx)+'px y='+Math.round(e.dataset.dy)+'px';}
+      var imgLine = window.__localImg ? ('本地图「'+window.__localImg+'」——请把这张图一起发我') : (cImgUrl.value || document.getElementById('photoImg').src);
+      var text = [
+        '【封面参数 · 慢半拍】',
+        'kicker: '+document.getElementById('cKicker').value,
+        '编号徽标: '+document.getElementById('cBadge').value,
+        '大字: '+document.getElementById('cTitle').value,
+        '副标题: '+document.getElementById('cSubtitle').value,
+        'tagline: '+document.getElementById('cTagline').value,
+        '日期: '+document.getElementById('cMeta').value,
+        '署名: '+document.getElementById('cSign').value,
+        '图片: '+imgLine,
+        '背景色: '+document.getElementById('cBg').value,
+        '主文字色: '+document.getElementById('cTitleColor').value,
+        '强调色: '+document.getElementById('cAccent').value,
+        '色块二: '+document.getElementById('cAccent2').value,
+        '色块三: '+document.getElementById('cAccent3').value,
+        '副文字色: '+document.getElementById('cSub').value,
+        '分割线色: '+document.getElementById('cRule').value,
+        '大字字号: '+document.getElementById('cTitleSize').value+'px',
+        '大字字距: '+document.getElementById('cTitleTracking').value+'px',
+        '副标题字号: '+document.getElementById('cSubSize').value+'px',
+        '—— 位置偏移（0,0=原位）——',
+        '顶部区位置: '+pos('elTop'),
+        '编号徽标位置: '+pos('elBadge'),
+        '大字位置: '+pos('elTitle'),
+        '副标题位置: '+pos('elSubtitle'),
+        'tagline位置: '+pos('elTagline'),
+        '署名位置: '+pos('elSign')
+      ].join('\n');
+      document.getElementById('paramsOut').value = text;
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).catch(function(){});
+      }
+    });
+  </script>
+</body>
+</html>
