@@ -6,7 +6,7 @@
 
 ## 结构约定
 
-- 页面 `body` 用 flex 横向排列：左 `.cover`（1086×1448，导出对象），右 `.panel`（`position:sticky`，不导出）。
+- 页面 `body` 用 flex 横向排列：左 `.cover`（1086×1448，导出对象），右 `.panel`（`position:sticky`，宽度 320px，不导出）。
 - **`.cover` 必须包一层 `.coverwrap` 并自动缩放适配屏幕**（1086×1448 原尺寸会占满/溢出屏幕，很难操作）。缩放只影响预览，导出仍按全尺寸干净母版出图，清晰度不受影响。照抄：
 
   ```html
@@ -19,7 +19,7 @@
   ```html
   <script>
     function fit(){
-      var availW=window.innerWidth-300-72, availH=window.innerHeight-48;   // 300=面板宽
+      var availW=window.innerWidth-320-72, availH=window.innerHeight-48;   // 320=面板宽
       var s=Math.min(availW/1086, availH/1448, 1); s=Math.max(s,0.2);
       var cover=document.getElementById('cover'), wrap=document.getElementById('coverwrap');
       cover.style.transform='scale('+s+')'; wrap.style.width=(1086*s)+'px'; wrap.style.height=(1448*s)+'px';
@@ -125,6 +125,7 @@
 面板须有「下载 PNG」按钮：用户不装任何工具也能出图。按钮旁注明小字"快速导出，精细效果以正式导出为准"。照抄（W/H 换成画布尺寸）：
 
 ```html
+<button id="btnDownload">下载 PNG</button> <small>快速导出，精细效果以正式导出为准</small>
 <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.13/dist/html-to-image.min.js"></script>
 <script>
   document.getElementById('btnDownload').addEventListener('click', function(){
