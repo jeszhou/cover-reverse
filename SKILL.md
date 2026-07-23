@@ -7,7 +7,7 @@ description: Reverse-engineer a reference cover image into an editable, self-con
 
 看到好看的封面，临摹下来变成你自己的可编辑母版——学的是设计语法，换的是你的内容。
 
-参考图逆向还原封面。三种玩法，产物都是"PNG + 可编辑 HTML 母版"。
+参考图逆向还原封面。四种玩法，产物都是"PNG + 可编辑 HTML 母版"。
 
 ## 玩法一：逆向还原新封面
 
@@ -19,8 +19,8 @@ description: Reverse-engineer a reference cover image into an editable, self-con
    - 骨架与 CSS 变量规范见 [references/layout-tips.md](references/layout-tips.md)
    - 中文字体只从 [references/fonts.md](references/fonts.md) 映射表选
    - 照片/插画元素用 `<img>` + 占位图；可调版支持点击换本地图（见"玩法四"）
-3. **交付只出一个 `主题_小红书封面_可调版.html`（带控制面板 + 拖拽 + 点击换图），先不出 PNG。** 列出可调整项，告诉用户怎么用（改文字/拖位置/点背景换图 → 复制参数发我）。
-4. **等用户参数确定**（把复制的参数 + 本地图发回）**再出正式 PNG**：按参数回填到干净母版 → 导出（见"导出与自查"），交付 `主题_小红书封面_v1.png` + 干净母版 HTML。
+3. **交付只出一个 `主题_封面_可调版.html`（带控制面板 + 拖拽 + 点击换图），先不出 PNG。** 列出可调整项，告诉用户怎么用（改文字/拖位置/点背景换图 → 复制参数发我）。
+4. **等用户参数确定**（把复制的参数 + 本地图发回）**再出正式 PNG**：按参数回填到干净母版 → 导出（见"导出与自查"），交付 `主题_封面_v1.png` + 干净母版 HTML。
 
 ## 玩法二：对话修改
 
