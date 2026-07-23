@@ -37,6 +37,9 @@
 - **图片**：**点击换图（主推）** + 图片链接输入框（备选），见下方「点击换图」。
 - **颜色**：每个 `--*-color` 变量一个 `<input type=color>` + 显示当前 hex。
 - **数值**：每个字号/字距/位置类变量一个 `<input type=range>` + 显示"值+单位"。范围给合理区间（字号 120–360、字距 -12–20、位置 20–70% 等，按变量调整）。
+- **署名**：面板固定有「我的署名」文本框（id `cSign`），绑定封面上的署名元素（id `elSign`，
+  可拖拽）。位置参考原图署名位——版权切分抹掉了别人的署名，这里放上用户自己的。
+  用户清空输入框则隐藏署名元素（bindText 基础上加一行 `e.style.display=i.value?'':'none'`）。
 
 ## JS 绑定（三个 helper，照抄即可）
 
@@ -117,6 +120,27 @@
 - **本地图只存在于用户的浏览器预览里，不在磁盘 HTML 文件中**（data URL 未落盘）。所以我要出正式 PNG 时**必须拿到用户那张原图**——复制参数里对本地图输出提示："图片: 本地图「<文件名>」——请把这张图一起发我"；用户把图发进对话或放进封面文件夹，我再 bake。
 - 若用的是图片 URL（非本地图），参数里直接给 URL，我能自取，无需额外发图。
 
+## 下载 PNG 按钮（浏览器内快速导出，零依赖兜底）
+
+面板须有「下载 PNG」按钮：用户不装任何工具也能出图。按钮旁注明小字"快速导出，精细效果以正式导出为准"。照抄（W/H 换成画布尺寸）：
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.13/dist/html-to-image.min.js"></script>
+<script>
+  document.getElementById('btnDownload').addEventListener('click', function(){
+    var cover=document.getElementById('cover'), old=cover.style.transform;
+    cover.style.transform='none';               // 临时取消预览缩放，按全尺寸导出
+    htmlToImage.toPng(cover,{width:W,height:H,pixelRatio:1})
+      .then(function(url){ cover.style.transform=old;
+        var a=document.createElement('a'); a.download='封面_快速导出.png'; a.href=url; a.click(); })
+      .catch(function(e){ cover.style.transform=old; alert('导出失败：'+e+'（可改用复制参数流程出正式图）'); });
+  });
+</script>
+```
+
+- 需要联网加载 CDN 与字体；导出失败（跨域图等）时引导走复制参数流程。
+- 正式 PNG 仍以干净母版 + 导出降级链为准，此按钮只是自助兜底。
+
 ## 复制参数按钮
 
 点击后把所有控件当前值拼成一段可读文本，写进剪贴板（`navigator.clipboard.writeText`），并显示在一个只读 `<textarea>` 里兜底（剪贴板失败时可手动选中复制）。格式固定，方便回填时解析：
@@ -128,6 +152,7 @@
 副标题: ...
 tagline: ...
 日期: ...
+署名: ...
 图片URL: ...
 背景色: #......
 文字色: #......
@@ -141,6 +166,7 @@ tagline: ...
 大字位置: x=..px y=..px
 小标题位置: x=..px y=..px
 副标题位置: x=..px y=..px
+署名位置: x=..px y=..px
 ...每个可拖元素一行
 ```
 
