@@ -1,6 +1,6 @@
 ---
 name: cover-reverse
-description: Reverse-engineer a reference cover image into an editable, self-contained HTML master and export a platform-sized PNG (Xiaohongshu 3:4 by default). Use when the user provides a reference image and asks to 照这张图做封面, 临摹这个封面/排版, 逆向还原这个设计, clone this cover style, or asks to recolor an existing cover with another image's palette (配色换肤). Learns only the design language (layout, palette, type) — never copies the original's text, signatures, photos, or illustrations.
+description: Reverse-engineer a reference cover image into an editable, self-contained HTML master and export a platform-sized PNG (ask the user which platform/size first — Xiaohongshu, WeChat, Bilibili, square, video — do not default to Xiaohongshu). Use when the user provides a reference image and asks to 照这张图做封面, 临摹这个封面/排版, 逆向还原这个设计, clone this cover style, or asks to recolor an existing cover with another image's palette (配色换肤). Learns only the design language (layout, palette, type) — never copies the original's text, signatures, photos, or illustrations.
 ---
 
 # Cover Reverse（封面临摹）
@@ -11,7 +11,7 @@ description: Reverse-engineer a reference cover image into an editable, self-con
 
 ## 玩法一：逆向还原新封面
 
-输入：参考图（必须）+ 封面文案。缺文案时先问一句再动手。
+输入：参考图（必须）+ 目标平台/尺寸 + 封面文案。**未指定平台不要默认小红书**，缺平台或缺文案时把它们合并成一句问清再动手（见 reverse-analysis.md 第 0b 步）。
 
 1. 读参考图，按 [references/reverse-analysis.md](references/reverse-analysis.md) 完成五步分析
 2. 生成自包含 HTML：
