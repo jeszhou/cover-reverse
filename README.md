@@ -2,7 +2,7 @@
 
 看到好看的封面，临摹下来变成你自己的可编辑母版——学的是设计语法，换的是你的内容。
 
-<!-- PLAYGROUND_LINK：Task 9 回填「在线试玩」链接 -->
+**🎮 [在线试玩](https://jeszhou.github.io/cover-reverse/playground/)** —— 不用安装任何东西，先在浏览器里拖一拖滑块、拽一拽元素、点图换图，感受一下"可调版母版"是什么。
 
 ## 效果长什么样
 
@@ -45,7 +45,7 @@
 ## 安装
 
 ```bash
-git clone https://github.com/<owner>/cover-reverse.git ~/.claude/skills/cover-reverse
+git clone https://github.com/jeszhou/cover-reverse.git ~/.claude/skills/cover-reverse
 ```
 
 装好之后重启一下 Claude Code 就能用了；如果你用的是其他支持 "Agent Skills"（也就是能加载"技能包"文件夹的 AI 编程工具）的工具，把这个文件夹放进它自己的技能目录就行，用法完全一样。
